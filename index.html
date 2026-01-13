@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Kelly Criterion Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="container">
+      <h1>Kelly Criterion Calculator</h1>
+      <p class="sub">
+        Computes the optimal bet fraction for a single binary wager using the Kelly Criterion.
+        Includes a step-by-step breakdown of each calculation.
+      </p>
+    </header>
+
+    <main class="container grid">
+      <section class="card">
+        <h2>Inputs</h2>
+
+        <label class="field">
+          <span>Bankroll (optional)</span>
+          <input id="bankroll" type="number" min="0" step="0.01" placeholder="e.g., 1000" />
+          <small>If provided, we’ll compute the recommended stake amount.</small>
+        </label>
+
+        <label class="field">
+          <span>Win Probability (p)</span>
+          <div class="row">
+            <input id="p" type="number" min="0" step="0.0001" placeholder="e.g., 0.55" />
+            <select id="pFormat">
+              <option value="decimal" selected>Decimal (0–1)</option>
+              <option value="percent">Percent (0–100)</option>
+            </select>
+          </div>
+          <small>
+            Your estimated probability of winning. Example: 0.55 = 55%.
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Odds</span>
+          <div class="row">
+            <input id="odds" type="text" placeholder="e.g., 2.10 or 11/10" />
+            <select id="oddsFormat">
+              <option value="decimal" selected>Decimal Odds (e.g., 2.10)</option>
+              <option value="fractional">Fractional Odds (e.g., 11/10)</option>
+            </select>
+          </div>
+          <small>
+            We convert odds into <b>net odds (b)</b>: profit per 1 unit staked.
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Fractional Kelly</span>
+          <div class="row">
+            <input id="fractional" type="range" min="0" max="1" step="0.05" value="1" />
+            <div class="pill"><span id="fractionalLabel">1.00×</span></div>
+          </div>
+          <small>
+            Many people use 0.5× Kelly (half-Kelly) to reduce risk/volatility.
+          </small>
+        </label>
+
+        <div class="actions">
+          <button id="example">Load Example</button>
+          <button id="reset" class="secondary">Reset</button>
+        </div>
+
+        <p class="note">
+          Kelly is best for repeated bets with stable edge. This is educational — not financial advice.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Results</h2>
+
+        <div class="result">
+          <div class="metric">
+            <span class="label">Net odds (b)</span>
+            <span class="value" id="bOut">—</span>
+          </div>
+
+          <div class="metric">
+            <span class="label">Lose probability (q = 1 − p)</span>
+            <span class="value" id="qOut">—</span>
+          </div>
+
+          <div class="metric highlight">
+            <span class="label">Full Kelly fraction (f*)</span>
+            <span class="value" id="kellyOut">—</span>
+          </div>
+
+          <div class="metric highlight">
+            <span class="label">Applied fraction (fractional × f*)</span>
+            <span class="value" id="appliedOut">—</span>
+          </div>
+
+          <div class="metric">
+            <span class="label">Recommended stake</span>
+            <span class="value" id="stakeOut">—</span>
+          </div>
+
+          <div class="metric">
+            <span class="label">Expected log growth (per bet, using applied fraction)</span>
+            <span class="value" id="growthOut">—</span>
+          </div>
+        </div>
+
+        <h3>Calculation Breakdown</h3>
+        <pre id="breakdown" class="pre">Enter inputs to see the step-by-step math.</pre>
+
+        <details class="details">
+          <summary>What formula is this using?</summary>
+          <div class="detailsBody">
+            <p>
+              For a binary wager where you win with probability <b>p</b> and lose with probability <b>q = 1 − p</b>,
+              and your bet pays <b>b</b> net profit per 1 unit staked:
+            </p>
+            <p class="formula">
+              <b>f* = (b·p − q) / b</b>
+            </p>
+            <p>
+              If <b>f* ≤ 0</b>, Kelly says you have no positive edge (or not enough), so optimal is <b>0</b> (don’t bet).
+            </p>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <footer class="container footer">
+      <p>
+        Built for demo + GitHub Pages. You can fork and customize.
+      </p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
